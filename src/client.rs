@@ -390,10 +390,6 @@ impl<S: Read + Write> Client<S> {
         self.find_generic("search", query, window.into())
     }
 
-    pub fn listall(&mut self) -> Result<Vec<Song>> {
-        self.run_command( "listall", None).and_then(|_| self.read_structs("file"))        
-    }
-    
     fn find_generic(&mut self, cmd: &str, query: &Query, window: Window) -> Result<Vec<Song>> {
         self.run_command(cmd, (query, window)).and_then(|_| self.read_structs("file"))
     }
@@ -414,6 +410,11 @@ impl<S: Read + Write> Client<S> {
     pub fn lsinfo<P: ToSongPath>(&mut self, path: P) -> Result<Song> {
         self.run_command("lsinfo", path).and_then(|_| self.read_struct())
     }
+
+    pub fn listall(&mut self) -> Result<Vec<Song>> {
+        self.run_command( "listall", () ).and_then(|_| self.read_structs("file"))        
+    }
+    
 
     // }}}
 
